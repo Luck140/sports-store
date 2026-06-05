@@ -28,12 +28,11 @@ AI 自动分析了项目结构：FastAPI 后端 + Vue 3 前端 + MySQL 数据库
 在 Claude Code 对话框中输入简单的请求："请解释 backend/models.py 中定义的数据库模型"
 AI 正确分析了所有 9 张表的字段、外键关系和用途
 确认 AI 能够正确理解项目代码，环境配置成功
-1.5 配置过程中遇到的问题
 
+1.5 配置过程中遇到的问题
 问题一：
 DeepSeek API 密钥未配置，Claude Code 报错 "Authentication failed"
 解决方法：在 DeepSeek 官网注册账号，进入 "API Keys" 页面创建新密钥，复制到 VS Code 设置中
-
 问题二：
 工作区文件夹路径包含中文时，AI 无法正确读取文件
 解决方法：确保路径中没有中文字符
