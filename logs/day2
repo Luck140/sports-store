@@ -1,0 +1,71 @@
+Day2：数据库模型定义与顾客认证、商品查询功能
+
+一、完成内容
+1. 数据库模型定义（models.py）
+- 使用 SQLAlchemy ORM 定义了9张表的 Python 模型类
+- 包括：Customer（顾客）、Manufacturer（厂家）、Product（商品）、Order（订单）、OrderDetail（订单细则）、Payment（支付）、StockRecord（库存变动）、PurchaseOrder（进货单）、PurchaseDetail（进货细则）
+- 配置了表之间的外键关联关系，与 init.sql 建表脚本保持一致
+- 字段类型和约束条件与数据库设计文档完全对应
+
+2. 数据库连接配置（database.py）
+- 配置 MySQL 连接字符串，使用 mysql+pymysql 驱动
+- 创建 SQLAlchemy 引擎和会话工厂 SessionLocal
+- 实现 FastAPI 依赖注入函数 get_db()，用于在接口中获取数据库会话并自动关闭
+
+3. Pydantic 数据校验模型（schemas.py）
+- 定义了接口请求和响应的数据结构
+CustomerCreate：顾客注册请求体，包含用户名、密码、姓名、地址、电话、邮箱
+CustomerResponse：顾客信息响应体，包含所有顾客字段
+ProductResponse：商品信息响应体，包含商品基本字段
+
+4. 顾客认证接口（routers/customers.py）
+- POST /api/customers/register（顾客注册）
+  密码使用 SHA256 哈希后存储，不存明文
+  注册前检查用户名是否已存在，重复则返回 400 错误
+- POST /api/customers/login（顾客登录）
+  验证用户名和密码
+  登录成功返回 customer_id、customer_name 和提示信息
+  用户名或密码错误返回 401
+
+5. 商品查询接口（routers/products.py）
+- GET /api/products/：获取全部商品列表
+- GET /api/products/{product_id}：根据商品ID查询单个商品详情
+- GET /api/products/search/?keyword=xxx：根据关键词模糊匹配商品名称
+
+6. 前端页面初步搭建
+- 使用 Vue 3 + Vite 创建前端项目
+- 安装了 Element Plus 组件库和 Axios
+- 配置了 Axios 基础请求路径
+- 初步搭建了前端路由（Vue Router）
+- 实现了注册页面（Register.vue）、登录页面（Login.vue）、首页（Home.vue）、商品列表页面（Products.vue）
+- 使用 Pinia 创建了 userStore 管理用户登录状态
+- 配置了简单的路由守卫
+注意：目前前端页面功能非常基础，样式简陋，仅搭建了功能框架。购物车、订单等页面路由已配置但内容为空壳。
+
+7. 跨域问题解决
+- 后端添加了 CORS 中间件配置
+- 允许前端 localhost:5173 跨域请求后端 127.0.0.1:8000
+
+
+二、遇到的问题与解决
+问题一：
+后端启动报错 "Table doesn't exist"
+原因：数据库未执行建表脚本
+解决方法：在 MySQL 中手动执行 init.sql 创建所有表
+
+问题二：
+注册接口返回 500 错误
+原因：database.py 中数据库密码配置错误
+解决方法：检查 MySQL root 用户密码，修改连接字符串
+
+问题三：
+前端请求后端报跨域错误
+原因：FastAPI 默认不允许跨域访问
+解决方法：在 main.py 中添加 CORSMiddleware
+
+
+三、目前存在的问题
+1. 前端页面样式简陋，使用 Element Plus 默认样式
+2. 购物车、订单、个人信息等页面路由已定义但内容为空
+3. 管理员后台尚未开发
+4. 导航栏不会根据登录状态动态变化
