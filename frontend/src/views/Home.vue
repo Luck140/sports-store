@@ -27,13 +27,14 @@ const features = [
 </script>
 
 <style scoped>
-.hero { height:100%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); }
-.hero-box { text-align:center; color:#fff; padding:40px; }
-.hero-box h1 { font-size:36px; margin-bottom:10px; }
-.subtitle { font-size:16px; opacity:0.9; margin-bottom:40px; }
-.features { display:flex; gap:24px; justify-content:center; margin-bottom:40px; }
-.f-card { width:180px; background:rgba(255,255,255,0.15); border:none; color:#fff; }
+.hero { height:100%; display:flex; align-items:center; justify-content:center; background:var(--hero-gradient); }
+.hero-box { text-align:center; color:#fff; padding:40px; max-width:800px; width:90%; }
+.hero-box h1 { font-size:var(--font-size-2xl); margin-bottom:10px; font-weight:700; }
+.subtitle { font-size:var(--font-size-md); opacity:0.9; margin-bottom:40px; }
+.features { display:flex; gap:24px; justify-content:center; margin-bottom:40px; flex-wrap:wrap; }
+.f-card { width:clamp(140px, 30vw, 180px); background:rgba(255,255,255,0.15); border:none; color:#fff; }
 .f-card h3 { margin:8px 0; }
-.f-card p { font-size:12px; opacity:0.8; }
-.actions { display:flex; gap:16px; justify-content:center; }
+.f-card p { font-size:var(--font-size-xs); opacity:0.8; }
+.actions { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+@media (max-width:480px) { .hero-box { padding:20px; } .features { gap:16px; } }
 </style>

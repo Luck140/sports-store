@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-09T00:00:00Z",
+  "title": "Design System: Sports Store",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "深松绿", "canonical": "#1e3a3a", "tonalRamp": ["#0a1a1a", "#0e1e1e", "#152a2a", "#1e3a3a", "#2a4a4a", "#4a6a6a", "#7a9a9a", "#bccaca"] },
+      "accent": { "role": "accent", "displayName": "琥珀金", "canonical": "#c8913a", "tonalRamp": ["#7a5520", "#8a6525", "#a6752a", "#c8913a", "#dbb05c", "#e8c87a", "#f0daa0", "#f8ecd0"] },
+      "dark-bg": { "role": "neutral", "displayName": "深松绿底", "canonical": "#162626", "tonalRamp": ["#0a1212", "#0f1a1a", "#162626", "#1e3232", "#2a4242", "#3a5252", "#4a6a6a", "#8aa0a0"] },
+      "neutral-bg": { "role": "neutral", "displayName": "米灰底", "canonical": "#f5f3ef", "tonalRamp": ["#d5d0c8", "#e2ddd6", "#edebe6", "#f5f3ef", "#faf8f5", "#fcfbf9", "#fdfdfc", "#ffffff"] },
+      "danger": { "role": "accent", "displayName": "砖红", "canonical": "#8a3a3a", "tonalRamp": ["#4a1a1a", "#5a2525", "#6a2e2e", "#8a3a3a", "#a04a4a", "#b86a6a", "#d0a0a0", "#e8d0d0"] },
+      "ink": { "role": "neutral", "displayName": "墨色", "canonical": "#1a1a1a", "tonalRamp": ["#0a0a0a", "#1a1a1a", "#2a2a2a", "#4a4a4a", "#5a5a5a", "#7a7a7a", "#a0a0a0", "#d0d0d0"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero 区域主标题、页面大标题" },
+      "body": { "displayName": "Body", "purpose": "正文内容、表格内容、表单标签" },
+      "label": { "displayName": "Label", "purpose": "辅助文字、标签、统计数字说明" }
+    },
+    "shadows": [
+      { "name": "card-hover", "value": "0 2px 12px rgba(0,0,0,0.1)", "purpose": "卡片 hover 状态" },
+      { "name": "dropdown", "value": "0 2px 12px rgba(0,0,0,0.15)", "purpose": "下拉菜单、弹窗" }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "状态变换默认缓动" }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "768px" },
+      { "name": "md", "value": "1024px" },
+      { "name": "lg", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "主操作按钮，用于注册、提交、确认等关键操作",
+      "html": "<button class=\"ds-btn-primary\">立即注册</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; background: #1e3a3a; color: #fff; padding: 12px 20px; font-size: 14px; font-weight: 500; font-family: 'Helvetica Neue', -apple-system, sans-serif; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s, transform 0.15s; line-height: 1.4; } .ds-btn-primary:hover { background: #2a4a4a; transform: translateY(-1px); } .ds-btn-primary:active { background: #152a2a; transform: translateY(0); }"
+    },
+    {
+      "name": "Default Button",
+      "kind": "button",
+      "refersTo": "button-default",
+      "description": "次要操作按钮",
+      "html": "<button class=\"ds-btn-default\">取消</button>",
+      "css": ".ds-btn-default { display: inline-flex; align-items: center; justify-content: center; background: #fff; color: #303133; padding: 12px 20px; font-size: 14px; font-weight: 400; font-family: 'Helvetica Neue', -apple-system, sans-serif; border: 1px solid #dcdfe6; border-radius: 4px; cursor: pointer; transition: border-color 0.2s, color 0.2s; line-height: 1.4; } .ds-btn-default:hover { color: #409EFF; border-color: #409EFF; }"
+    },
+    {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "card-default",
+      "description": "商品展示卡片，悬停可交互",
+      "html": "<div class=\"ds-card-product\"><div class=\"ds-card-product-icon\">🏀</div><div class=\"ds-card-product-name\">篮球</div><div class=\"ds-card-product-price\">¥89.00</div><div class=\"ds-card-product-stock\">库存：200</div></div>",
+      "css": ".ds-card-product { background: #fff; border-radius: 4px; padding: 20px; text-align: center; border: 1px solid #eae7e0; cursor: pointer; transition: box-shadow 0.25s, transform 0.2s; } .ds-card-product:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); transform: translateY(-2px); } .ds-card-product-icon { font-size: 48px; margin-bottom: 8px; } .ds-card-product-name { font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; } .ds-card-product-price { font-size: 18px; font-weight: 700; color: #c8913a; } .ds-card-product-stock { font-size: 12px; color: #7a7a7a; margin-top: 4px; }"
+    },
+    {
+      "name": "Sidebar Menu Item",
+      "kind": "nav",
+      "refersTo": "sidebar-menu",
+      "description": "侧边栏导航菜单项",
+      "html": "<div class=\"ds-nav-item\"><span class=\"ds-nav-icon\">📦</span><span>商品管理</span></div>",
+      "css": ".ds-nav-item { display: flex; align-items: center; gap: 8px; padding: 0 20px; height: 50px; color: #bcc6c6; font-size: 14px; font-family: 'Helvetica Neue', -apple-system, sans-serif; cursor: pointer; transition: background 0.15s; } .ds-nav-item:hover { background: rgba(255,255,255,0.05); } .ds-nav-item.active { color: #c8913a; background: rgba(200,145,58,0.1); } .ds-nav-icon { font-size: 16px; }"
+    },
+    {
+      "name": "Status Tag",
+      "kind": "chip",
+      "refersTo": "tag-default",
+      "description": "订单状态标签，多色变体",
+      "html": "<span class=\"ds-tag ds-tag-primary\">已确认</span><span class=\"ds-tag ds-tag-success\">已发货</span><span class=\"ds-tag ds-tag-warning\">待确认</span><span class=\"ds-tag ds-tag-danger\">缺货</span>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; padding: 0 8px; height: 24px; font-size: 12px; font-weight: 500; border-radius: 4px; font-family: 'Helvetica Neue', -apple-system, sans-serif; margin-right: 4px; } .ds-tag-primary { background: rgba(64,158,255,0.1); color: #409EFF; border: 1px solid rgba(64,158,255,0.2); } .ds-tag-success { background: rgba(103,194,58,0.1); color: #67c23a; border: 1px solid rgba(103,194,58,0.2); } .ds-tag-warning { background: rgba(230,162,60,0.1); color: #e6a23c; border: 1px solid rgba(230,162,60,0.2); } .ds-tag-danger { background: rgba(245,108,108,0.1); color: #f56c6c; border: 1px solid rgba(245,108,108,0.2); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "活力运动站",
+    "overview": "一个面向体育用品批发行业的企业管理系统。设计语言在专业可靠的基础上，融入适度的运动活力感——不花哨，但有温度。界面以内容效率为核心，采用清爽的蓝白色调和整洁的卡片式布局，让用户能快速聚焦业务操作。设计上明确拒绝花哨的电商风格：不做过度的促销视觉、不堆砌装饰元素、不滥用渐变动画。每一像素都为功能服务。",
+    "keyCharacteristics": [
+      "干净清爽的蓝白基调，品牌色克制成点缀而非铺满",
+      "卡片式内容组织，信息层级清晰",
+      "扁平化为主，阴影仅用于交互反馈（悬停、聚焦）",
+      "字体统一使用无衬线体系，排版干净利落"
+    ],
+    "rules": [
+      { "name": "The Accent-as-Signal Rule", "body": "品牌蓝的使用面积控制在界面 15% 以内。它不是背景色，而是交互信号——按钮、链接、选中态。用得越克制，信号越强。", "section": "colors" },
+      { "name": "The Flat-by-Default Rule", "body": "表面在静止状态下是平的。阴影仅作为交互反馈出现（悬停、聚焦、展开）。不要给静止卡片加永久阴影。", "section": "elevation" }
+    ],
+    "dos": [
+      "使用品牌蓝 (#409EFF) 作为唯一的交互信号色。按钮、链接、选中态使用它，但不要铺满整个界面。",
+      "保持卡片简洁：白底 + 小圆角，悬停时升起阴影。",
+      "使用 Element Plus 的标准组件，通过 CSS 变量覆盖主题而非自定义组件。",
+      "在侧边栏深色背景上使用 #bfcbd9 作为文字颜色，确保 4.5:1 对比度。",
+      "用 el-tag 的颜色区分订单状态，但同时保留文字标签，方便色盲用户。"
+    ],
+    "donts": [
+      "使用花哨的电商风格：过多的促销弹窗、广告横幅、闪烁的动画。",
+      "在卡片内再嵌套卡片。嵌套卡片永远是不好的设计。",
+      "使用紫蓝色渐变作为全站通用背景——它仅限首页 Hero 区域。",
+      "使用纯灰色 (#999, #ccc) 作为正文文字颜色。正文必须满足 WCAG AA 4.5:1 对比度。",
+      "给静态卡片加永久阴影。阴影只作为交互反馈出现。",
+      "在表单提交时不显示 loading 状态。用户需要知道系统正在处理。",
+      "引入第二种无衬线字体——当前字体体系已经足够。",
+      "用纯色传递唯一信息。比如不要只用红色表示\"缺货\"，要同时有文字说明。"
+    ]
+  }
+}

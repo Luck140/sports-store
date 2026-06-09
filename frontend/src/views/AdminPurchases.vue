@@ -10,7 +10,7 @@
       <el-table-column prop="status" label="状态" />
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button v-if="scope.row.status==='PENDING'" type="primary" size="small" @click="confirmPurchase(scope.row.purchase_id)">确认入库</el-button>
+          <el-button v-if="scope.row.status==='PENDING'" type="primary" size="small" @click="confirmPurchase(scope.row.purchase_id)" :loading="confirmingId === scope.row.purchase_id">确认入库</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -49,25 +49,32 @@ import { ElMessage } from 'element-plus'
 const purchases = ref([])
 const manufacturers = ref([])
 const dialogVisible = ref(false)
+const confirmingId = ref(null)
 const form = ref({ manufacturer_id: null, items: [{ product_id: 1, quantity: 1, unit_price: 0 }] })
 
-const fetchPurchases = async () => { const res = await axios.get('/api/admin/purchases'); purchases.value = res.data }
-const fetchManufacturers = async () => { const res = await axios.get('/api/admin/manufacturers'); manufacturers.value = res.data }
+const fetchPurchases = async () => { try { const res = await axios.get('/api/admin/purchases'); purchases.value = res.data } catch { ElMessage.error('加载进货单失败') } }
+const fetchManufacturers = async () => { try { const res = await axios.get('/api/admin/manufacturers'); manufacturers.value = res.data } catch {} }
 
 const openDialog = () => { dialogVisible.value = true; form.value = { manufacturer_id: null, items: [{ product_id: 1, quantity: 1, unit_price: 0 }] } }
 
 const createPurchase = async () => {
   if (!form.value.manufacturer_id) { ElMessage.warning('请选择厂家'); return }
-  await axios.post('/api/admin/purchases', form.value)
-  ElMessage.success('进货单创建成功')
-  dialogVisible.value = false
-  fetchPurchases()
+  try {
+    await axios.post('/api/admin/purchases', form.value)
+    ElMessage.success('进货单创建成功')
+    dialogVisible.value = false
+    fetchPurchases()
+  } catch { ElMessage.error('创建失败') }
 }
 
 const confirmPurchase = async (id) => {
-  await axios.post(`/api/admin/purchases/${id}/confirm`)
-  ElMessage.success('入库成功')
-  fetchPurchases()
+  confirmingId.value = id
+  try {
+    await axios.post(`/api/admin/purchases/${id}/confirm`)
+    ElMessage.success('入库成功')
+    fetchPurchases()
+  } catch { ElMessage.error('入库失败') }
+  finally { confirmingId.value = null }
 }
 
 onMounted(() => { fetchPurchases(); fetchManufacturers() })

@@ -1,10 +1,10 @@
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <template #header>
       <span style="font-weight:bold;font-size:16px">个人信息</span>
       <el-button v-if="!editing" type="primary" size="small" style="float:right" @click="startEdit">编辑</el-button>
-      <el-button v-else type="success" size="small" style="float:right" @click="save">保存</el-button>
-      <el-button v-if="editing" size="small" style="float:right;margin-right:8px" @click="cancelEdit">取消</el-button>
+      <el-button v-else type="success" size="small" style="float:right" @click="save" :loading="saving">保存</el-button>
+      <el-button v-if="editing" size="small" style="float:right;margin-right:8px" @click="cancelEdit" :disabled="saving">取消</el-button>
     </template>
     <el-form :model="form" label-width="100px" :disabled="!editing">
       <el-form-item label="用户名"><el-input v-model="form.username" disabled /></el-form-item>
@@ -26,25 +26,35 @@ import { ElMessage } from 'element-plus'
 const userStore = useUserStore()
 const form = ref({ username: '', customer_name: '', address: '', phone: '', email: '', role: '' })
 const editing = ref(false)
+const loading = ref(false)
+const saving = ref(false)
 let backup = {}
 
 const fetchProfile = async () => {
-  const res = await axios.get(`/api/customers/${userStore.user.customer_id}`)
-  Object.assign(form.value, res.data)
+  loading.value = true
+  try {
+    const res = await axios.get(`/api/customers/${userStore.user.customer_id}`)
+    Object.assign(form.value, res.data)
+  } catch { ElMessage.error('加载个人信息失败') }
+  finally { loading.value = false }
 }
 
 const startEdit = () => { backup = { ...form.value }; editing.value = true }
 const cancelEdit = () => { Object.assign(form.value, backup); editing.value = false }
 
 const save = async () => {
-  await axios.put(`/api/customers/${userStore.user.customer_id}`, {
-    customer_name: form.value.customer_name, address: form.value.address,
-    phone: form.value.phone, email: form.value.email
-  })
-  userStore.user.customer_name = form.value.customer_name
-  localStorage.setItem('customer', JSON.stringify(userStore.user))
-  ElMessage.success('保存成功')
-  editing.value = false
+  saving.value = true
+  try {
+    await axios.put(`/api/customers/${userStore.user.customer_id}`, {
+      customer_name: form.value.customer_name, address: form.value.address,
+      phone: form.value.phone, email: form.value.email
+    })
+    userStore.user.customer_name = form.value.customer_name
+    localStorage.setItem('customer', JSON.stringify(userStore.user))
+    ElMessage.success('保存成功')
+    editing.value = false
+  } catch { ElMessage.error('保存失败') }
+  finally { saving.value = false }
 }
 
 onMounted(fetchProfile)

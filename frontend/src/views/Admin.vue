@@ -33,6 +33,6 @@ onMounted(async () => {
 
 <style scoped>
 .stat-card { text-align:center; }
-.stat-num { font-size:36px; font-weight:bold; color:#409EFF; }
-.stat-label { font-size:14px; color:#909399; margin-top:8px; }
+.stat-num { font-size:36px; font-weight:bold; color:var(--color-primary); }
+.stat-label { font-size:14px; color:var(--color-text-muted); margin-top:8px; }
 </style>

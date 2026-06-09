@@ -19,11 +19,10 @@ const routes = [
 
 const router = createRouter({ history: createWebHistory(), routes })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   const customer = JSON.parse(localStorage.getItem('customer') || 'null')
-  if (to.meta.requiresAuth && !customer) return next('/login')
-  if (to.meta.requiresAdmin && customer?.role !== 'admin') return next('/')
-  next()
+  if (to.meta.requiresAuth && !customer) return '/login'
+  if (to.meta.requiresAdmin && customer?.role !== 'admin') return '/'
 })
 
 export default router

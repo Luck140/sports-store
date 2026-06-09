@@ -1,12 +1,12 @@
 <template>
   <el-card>
     <template #header><span style="font-weight:bold;font-size:16px">我的订单</span></template>
-    <el-table :data="orders" empty-text="暂无订单">
+    <el-table :data="orders" v-loading="loading" empty-text="暂无订单">
       <el-table-column prop="order_id" label="订单号">
         <template #default="scope"><router-link :to="`/orders/${scope.row.order_id}`">#{{ scope.row.order_id }}</router-link></template>
       </el-table-column>
       <el-table-column prop="total_amount" label="金额">
-        <template #default="scope"><span style="color:#f56c6c;font-weight:bold">¥{{ scope.row.total_amount }}</span></template>
+        <template #default="scope"><span style="color:var(--color-accent);font-weight:bold">¥{{ scope.row.total_amount }}</span></template>
       </el-table-column>
       <el-table-column prop="status" label="状态">
         <template #default="scope">
@@ -23,15 +23,15 @@
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button v-if="scope.row.payment_status===0" type="success" size="small" @click="showPayDialog(scope.row)">支付</el-button>
-          <el-button v-if="scope.row.status==='SHIPPED'&&scope.row.payment_status===1" type="warning" size="small" @click="refund(scope.row.order_id)">退款</el-button>
+          <el-button v-if="scope.row.payment_status===0" type="success" size="small" @click="showPayDialog(scope.row)" :loading="paying">支付</el-button>
+          <el-button v-if="scope.row.status==='SHIPPED'&&scope.row.payment_status===1" type="warning" size="small" @click="refund(scope.row.order_id)" :loading="refunding">退款</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <el-dialog v-model="payVisible" title="确认支付" width="400px">
       <p>订单号：{{ payOrder?.order_id }}</p>
-      <p>金额：<strong style="color:#f56c6c">¥{{ payOrder?.total_amount }}</strong></p>
+      <p>金额：<strong style="color:var(--color-accent)">¥{{ payOrder?.total_amount }}</strong></p>
       <el-radio-group v-model="payMethod">
         <el-radio label="ALIPAY">支付宝</el-radio>
         <el-radio label="WECHAT">微信支付</el-radio>
@@ -39,7 +39,7 @@
       </el-radio-group>
       <template #footer>
         <el-button @click="payVisible=false">取消</el-button>
-        <el-button type="primary" @click="doPay">确认支付</el-button>
+        <el-button type="primary" @click="doPay" :loading="paying">确认支付</el-button>
       </template>
     </el-dialog>
   </el-card>
@@ -53,28 +53,41 @@ import { ElMessage } from 'element-plus'
 
 const userStore = useUserStore()
 const orders = ref([])
+const loading = ref(false)
 const payVisible = ref(false)
 const payOrder = ref(null)
 const payMethod = ref('ALIPAY')
+const paying = ref(false)
+const refunding = ref(false)
 
 const fetchOrders = async () => {
-  const res = await axios.get(`/api/orders/customer/${userStore.user.customer_id}`)
-  orders.value = res.data
+  loading.value = true
+  try { const res = await axios.get(`/api/orders/customer/${userStore.user.customer_id}`); orders.value = res.data }
+  catch { ElMessage.error('加载订单失败') }
+  finally { loading.value = false }
 }
 
 const showPayDialog = (order) => { payOrder.value = order; payVisible.value = true }
 const doPay = async () => {
-  await axios.post('/api/payments/', { order_id: payOrder.value.order_id, payment_method: payMethod.value, amount: payOrder.value.total_amount })
-  ElMessage.success('支付成功')
-  payVisible.value = false
-  fetchOrders()
+  paying.value = true
+  try {
+    await axios.post('/api/payments/', { order_id: payOrder.value.order_id, payment_method: payMethod.value, amount: payOrder.value.total_amount })
+    ElMessage.success('支付成功')
+    payVisible.value = false
+    fetchOrders()
+  } catch { ElMessage.error('支付失败，请稍后重试') }
+  finally { paying.value = false }
 }
 
 const refund = async (orderId) => {
   if (!confirm('确认退款？')) return
-  await axios.post('/api/payments/refund', { order_id: orderId, reason: '顾客申请退款' })
-  ElMessage.success('退款成功')
-  fetchOrders()
+  refunding.value = true
+  try {
+    await axios.post('/api/payments/refund', { order_id: orderId, reason: '顾客申请退款' })
+    ElMessage.success('退款成功')
+    fetchOrders()
+  } catch { ElMessage.error('退款失败') }
+  finally { refunding.value = false }
 }
 
 onMounted(fetchOrders)

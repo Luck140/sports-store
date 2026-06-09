@@ -1,14 +1,14 @@
 <template>
   <div>
     <el-card class="search-card">
-      <el-input v-model="keyword" placeholder="搜索商品名称..." prefix-icon="Search" style="width:300px" @keyup.enter="search" clearable />
+      <el-input v-model="keyword" placeholder="搜索商品名称..." prefix-icon="Search" style="width:300px" @keyup.enter="search" @clear="fetchProducts" clearable />
       <el-button type="primary" style="margin-left:10px" @click="search">搜索</el-button>
       <el-button v-if="userStore.isAdmin" type="success" style="margin-left:10px" @click="openAddDialog">添加商品</el-button>
     </el-card>
-    <el-card style="margin-top:16px">
+    <el-card style="margin-top:16px" v-loading="loading" element-loading-text="加载中...">
       <template #header><span style="font-weight:bold;font-size:16px">商品列表</span></template>
       <el-row :gutter="20">
-        <el-col :span="6" v-for="p in products" :key="p.product_id">
+        <el-col :xs="24" :sm="12" :lg="6" v-for="p in products" :key="p.product_id">
           <el-card class="product-card" shadow="hover" @click="$router.push(`/products/${p.product_id}`)" style="cursor:pointer">
             <div class="p-img">{{ getIcon(p.product_id) }}</div>
             <div class="p-name">{{ p.product_name }}</div>
@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 import { ElMessage } from 'element-plus'
@@ -51,20 +51,44 @@ const keyword = ref('')
 const manufacturers = ref([])
 const dialogVisible = ref(false)
 const editingProduct = ref(null)
+const loading = ref(false)
+let searchTimer = null
 const form = ref({ product_name: '', manufacturer_id: 1, unit_price: 0, stock_quantity: 0, min_stock_threshold: 10, description: '' })
 
 const icons = ['🏀','⚽','🏸','👕','⚾','🏐','🏓','🎽','🩳','🧢']
 const getIcon = (id) => icons[(id - 1) % icons.length]
 
-const fetchProducts = async () => { const res = await axios.get('/api/products/'); products.value = res.data }
-const fetchManufacturers = async () => { const res = await axios.get('/api/admin/manufacturers'); manufacturers.value = res.data }
-const search = async () => {
-  if (keyword.value) { const res = await axios.get('/api/products/search/', { params: { keyword: keyword.value } }); products.value = res.data }
-  else fetchProducts()
+const fetchProducts = async () => {
+  loading.value = true
+  try { const res = await axios.get('/api/products/'); products.value = res.data }
+  catch { ElMessage.error('加载商品失败') }
+  finally { loading.value = false }
 }
+const fetchManufacturers = async () => { const res = await axios.get('/api/admin/manufacturers'); manufacturers.value = res.data }
+
+const doSearch = async () => {
+  if (!keyword.value) { fetchProducts(); return }
+  loading.value = true
+  try { const res = await axios.get('/api/products/search/', { params: { keyword: keyword.value } }); products.value = res.data }
+  catch { ElMessage.error('搜索失败') }
+  finally { loading.value = false }
+}
+
+const search = () => {
+  if (searchTimer) clearTimeout(searchTimer)
+  searchTimer = setTimeout(doSearch, 300)
+}
+
+// When clearing the search input, reload products
+watch(keyword, (val) => {
+  if (!val) fetchProducts()
+})
+
 const addToCart = async (pid) => {
-  await axios.post(`/api/cart/${userStore.user.customer_id}/add`, null, { params: { product_id: pid, quantity: 1 } })
-  ElMessage.success('已加入购物车')
+  try {
+    await axios.post(`/api/cart/${userStore.user.customer_id}/add`, null, { params: { product_id: pid, quantity: 1 } })
+    ElMessage.success('已加入购物车')
+  } catch { ElMessage.error('添加失败') }
 }
 
 const openAddDialog = () => {
@@ -97,6 +121,6 @@ onMounted(() => { fetchProducts(); if (userStore.isAdmin) fetchManufacturers() }
 .product-card { text-align:center; margin-bottom:16px; }
 .p-img { font-size:60px; margin-bottom:8px; }
 .p-name { font-size:14px; font-weight:bold; margin-bottom:4px; }
-.p-price { color:#f56c6c; font-size:18px; font-weight:bold; }
-.p-stock { font-size:12px; color:#909399; margin-bottom:4px; }
+.p-price { color:var(--color-accent); font-size:18px; font-weight:bold; }
+.p-stock { font-size:12px; color:var(--color-text-muted); margin-bottom:4px; }
 </style>

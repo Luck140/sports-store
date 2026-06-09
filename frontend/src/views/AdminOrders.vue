@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <template #header><span style="font-weight:bold;font-size:16px">订单管理</span></template>
-    <el-table :data="orders">
+    <el-table :data="orders" v-loading="loading">
       <el-table-column prop="order_id" label="订单号" width="80" />
       <el-table-column prop="customer_name" label="顾客" width="100" />
       <el-table-column prop="total_amount" label="金额" width="80" />
@@ -24,9 +24,9 @@
       </el-table-column>
       <el-table-column label="操作" width="220">
         <template #default="scope">
-          <el-button v-if="scope.row.status==='PENDING'" type="primary" size="small" @click="confirm(scope.row.order_id)">确认</el-button>
-          <el-button v-if="scope.row.status==='CONFIRMED'" type="success" size="small" @click="ship(scope.row.order_id)">发货</el-button>
-          <el-button v-if="scope.row.status!=='SHIPPED'&&scope.row.status!=='CANCELLED'" type="danger" size="small" @click="cancel(scope.row.order_id)">取消</el-button>
+          <el-button v-if="scope.row.status==='PENDING'" type="primary" size="small" @click="confirm(scope.row.order_id)" :loading="actingOrder === scope.row.order_id && action === 'confirm'">确认</el-button>
+          <el-button v-if="scope.row.status==='CONFIRMED'" type="success" size="small" @click="ship(scope.row.order_id)" :loading="actingOrder === scope.row.order_id && action === 'ship'">发货</el-button>
+          <el-button v-if="scope.row.status!=='SHIPPED'&&scope.row.status!=='CANCELLED'" type="danger" size="small" @click="cancel(scope.row.order_id)" :loading="actingOrder === scope.row.order_id && action === 'cancel'">取消</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -66,16 +66,32 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
 const orders = ref([])
+const loading = ref(false)
 const invoiceVisible = ref(false)
 const shippingVisible = ref(false)
 const paymentsVisible = ref(false)
 const currentOrder = ref(null)
 const payments = ref([])
+const actingOrder = ref(null)
+const action = ref('')
 
-const fetchOrders = async () => { const res = await axios.get('/api/admin/orders'); orders.value = res.data }
-const confirm = async (id) => { await axios.post(`/api/admin/orders/${id}/confirm`); ElMessage.success('已确认'); fetchOrders() }
-const ship = async (id) => { await axios.post(`/api/admin/orders/${id}/ship`); ElMessage.success('已发货'); fetchOrders() }
-const cancel = async (id) => { await axios.post(`/api/admin/orders/${id}/cancel`); ElMessage.success('已取消'); fetchOrders() }
+const fetchOrders = async () => {
+  loading.value = true
+  try { const res = await axios.get('/api/admin/orders'); orders.value = res.data }
+  catch { ElMessage.error('加载订单失败') }
+  finally { loading.value = false }
+}
+
+const doAction = async (id, act, url, successMsg) => {
+  actingOrder.value = id; action.value = act
+  try { await axios.post(url); ElMessage.success(successMsg); fetchOrders() }
+  catch { ElMessage.error('操作失败') }
+  finally { actingOrder.value = null; action.value = '' }
+}
+
+const confirm = (id) => doAction(id, 'confirm', `/api/admin/orders/${id}/confirm`, '已确认')
+const ship = (id) => doAction(id, 'ship', `/api/admin/orders/${id}/ship`, '已发货')
+const cancel = (id) => doAction(id, 'cancel', `/api/admin/orders/${id}/cancel`, '已取消')
 
 const showInvoice = (order) => { currentOrder.value = order; invoiceVisible.value = true }
 const showShipping = (order) => { currentOrder.value = order; shippingVisible.value = true }
