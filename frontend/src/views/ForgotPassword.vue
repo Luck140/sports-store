@@ -1,6 +1,6 @@
 <template>
   <div class="form-page">
-    <h2>忘记密码</h2>
+    <h2>找回密码</h2>
     <el-form :model="form" :rules="rules" ref="formRef" label-width="80px" @keyup.enter="resetPassword">
       <el-form-item label="用户名" prop="username"><el-input v-model="form.username" placeholder="请输入用户名" /></el-form-item>
       <el-form-item label="邮箱" prop="email"><el-input v-model="form.email" placeholder="请输入注册邮箱" /></el-form-item>

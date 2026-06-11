@@ -2,6 +2,7 @@
   <el-card>
     <template #header><span style="font-weight:bold;font-size:16px">进货管理</span></template>
     <el-button type="primary" @click="openDialog">创建进货单</el-button>
+    <el-button style="margin-left:8px" @click="showLowStock" type="warning" plain>库存预警商品</el-button>
 
     <el-table :data="purchases" style="margin-top:16px" empty-text="暂无进货单">
       <el-table-column prop="purchase_id" label="进货单号" />
@@ -39,6 +40,18 @@
       <el-button type="primary" @click="createPurchase">提交</el-button>
     </template>
   </el-dialog>
+
+  <el-dialog v-model="lsVisible" title="库存预警商品" width="600px">
+    <el-table :data="lowStockProducts" empty-text="暂无库存预警">
+      <el-table-column prop="product_name" label="商品名" />
+      <el-table-column prop="manufacturer_name" label="厂家" />
+      <el-table-column prop="stock_quantity" label="当前库存" />
+      <el-table-column prop="min_stock_threshold" label="预警值" />
+      <el-table-column label="操作">
+        <template #default="scope"><el-button type="primary" size="small" @click="autoGeneratePurchase(scope.row)">一键进货</el-button></template>
+      </el-table-column>
+    </el-table>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -65,6 +78,21 @@ const createPurchase = async () => {
     dialogVisible.value = false
     fetchPurchases()
   } catch { ElMessage.error('创建失败') }
+}
+
+const lowStockProducts = ref([])
+const lsVisible = ref(false)
+
+const showLowStock = async () => {
+  try { const r = await axios.get('/api/admin/reports/low-stock'); lowStockProducts.value = r.data; lsVisible.value = true } catch {}
+}
+
+const autoGeneratePurchase = async (product) => {
+  try {
+    const r = await axios.post('/api/admin/purchases/from-low-stock', { product_id: product.product_id })
+    form.value = { manufacturer_id: r.data.manufacturer_id, items: [{ product_id: r.data.product_id, quantity: r.data.suggest_quantity, unit_price: r.data.suggest_unit_price }] }
+    lsVisible.value = false; dialogVisible.value = true
+  } catch { ElMessage.error('操作失败') }
 }
 
 const confirmPurchase = async (id) => {

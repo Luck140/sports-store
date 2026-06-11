@@ -1,166 +1,59 @@
-/* ============================================
-   Sports Store - Design Tokens
-   Palette: Pine Green + Amber Gold
-   Premium, distinctive, natural sophistication
-   ============================================ */
-
+/* Sports Store - Bright Orange Design System */
 :root {
-  /* ── Brand Colors: Pine Green ── */
-  --color-primary: #1e3a3a;
-  --color-primary-dark: #152a2a;
-  --color-primary-darker: #0e1e1e;
-  --color-primary-light: #2a4a4a;
-  --color-primary-lighter: #4a6a6a;
-  --color-primary-bg: rgba(30, 58, 58, 0.08);
-
-  /* ── Accent: Amber Gold ── */
-  --color-accent: #c8913a;
-  --color-accent-dark: #a6752a;
-  --color-accent-light: #dbb05c;
-  --color-accent-bg: rgba(200, 145, 58, 0.1);
-
-  /* ── Neutral Palette (warm organic) ── */
-  --color-bg: #f5f3ef;
-  --color-bg-soft: #edebe6;
+  --color-primary: #e8652d;
+  --color-primary-dark: #cc5520;
+  --color-primary-light: #f08050;
+  --color-primary-lighter: #f5a880;
+  --color-primary-bg: rgba(232, 101, 45, 0.08);
+  --color-accent: #e8652d;
+  --color-accent-hover: #d4551e;
+  --color-accent-light: #f09060;
+  --color-bg: #f5f6f8;
+  --color-bg-warm: #f0f1f4;
   --color-surface: #ffffff;
-  --color-surface-2: #faf8f5;
-  --color-border: #e2ddd6;
-  --color-border-light: #eae7e0;
-  --color-border-lighter: #f2efe9;
-
-  /* ── Ink (Text) ── */
+  --color-surface-alt: #fafbfc;
+  --color-border: #e2e5e9;
+  --color-border-light: #ebeef2;
   --color-text: #1a1a1a;
-  --color-text-2: #4a4a4a;
-  --color-text-muted: #7a7a7a;
-  --color-text-dim: #b0b0b0;
-
-  /* ── Dark Background (Sidebar, Hero) ── */
-  --color-dark-bg: #162626;
-  --color-dark-bg-2: #0f1a1a;
-  --color-dark-text: #bcc6c6;
-  --color-dark-text-active: #ffffff;
-  --color-dark-text-dim: rgba(255, 255, 255, 0.4);
-  --color-dark-border: rgba(255, 255, 255, 0.06);
-
-  /* ── Feedback Colors ── */
-  --color-success: #5a8a5a;
-  --color-warning: #c8913a;
-  --color-danger: #8a3a3a;
-  --color-info: #7a8a8a;
-
-  /* ── Hero Gradient (Home page only) ── */
-  --hero-gradient: linear-gradient(135deg, #1e3a3a 0%, #122a2a 50%, #0e1e1e 100%);
-
-  /* ── Shadows ── */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 2px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 2px 12px rgba(0, 0, 0, 0.12);
-
-  /* ── Typography ── */
-  --font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-  --font-size-xs: 12px;
-  --font-size-sm: 13px;
-  --font-size-base: 14px;
-  --font-size-md: 16px;
-  --font-size-lg: 18px;
-  --font-size-xl: 20px;
-  --font-size-2xl: 36px;
-
-  /* ── Border Radius ── */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-
-  /* ── Spacing ── */
-  --space-xs: 8px;
-  --space-sm: 12px;
-  --space-md: 16px;
-  --space-lg: 20px;
-  --space-xl: 24px;
-  --space-2xl: 40px;
+  --color-text-2: #555555;
+  --color-text-muted: #888888;
+  --color-text-dim: #bbbbbb;
+  --color-dark-bg: #1a1a1a;
+  --color-dark-bg-2: #111111;
+  --color-dark-text: #d0d0d0;
+  --color-dark-text-dim: rgba(255,255,255,0.35);
+  --color-success: #4caf84;
+  --color-warning: #e8a040;
+  --color-danger: #e05555;
+  --color-info: #8095a0;
+  --hero-gradient: linear-gradient(160deg, #e8652d 0%, #f08050 50%, #e8652d 100%);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
+  --font-family: 'PingFang SC','Hiragino Sans GB','Microsoft YaHei',-apple-system,sans-serif;
+  --font-size-xs:12px; --font-size-sm:13px; --font-size-base:14px;
+  --font-size-md:15px; --font-size-lg:17px; --font-size-xl:20px; --font-size-2xl:28px;
+  --radius-sm:6px; --radius-md:10px;
 }
 
-/* ── Element Plus CSS Variable Overrides ── */
 :root {
-  --el-color-primary: var(--color-primary);
-  --el-color-primary-dark-2: var(--color-primary-dark);
-  --el-color-primary-light-3: var(--color-primary-light);
-  --el-color-primary-light-5: #7a9a9a;
-  --el-color-primary-light-7: #bccaca;
-  --el-color-primary-light-8: #d6e0e0;
-  --el-color-primary-light-9: #e8efef;
-  --el-color-primary-light-10: #f2f5f5;
-  --el-color-success: var(--color-success);
-  --el-color-warning: var(--color-warning);
-  --el-color-danger: var(--color-danger);
-  --el-color-info: var(--color-info);
-  --el-border-radius-base: var(--radius-sm);
-  --el-border-radius-small: 2px;
-  --el-border-radius-round: 20px;
-  --el-border-radius-circle: 100%;
-  --el-font-size-base: var(--font-size-base);
-  --el-font-family: var(--font-family);
-  --el-bg-color: var(--color-bg);
-  --el-bg-color-overlay: var(--color-surface);
-  --el-text-color-primary: var(--color-text);
-  --el-text-color-regular: var(--color-text-2);
-  --el-text-color-secondary: var(--color-text-muted);
-  --el-text-color-placeholder: var(--color-text-dim);
-  --el-border-color: var(--color-border);
-  --el-border-color-light: var(--color-border-light);
-  --el-border-color-lighter: var(--color-border-lighter);
-  --el-fill-color: var(--color-bg);
-  --el-fill-color-light: var(--color-bg-soft);
-  --el-fill-color-lighter: var(--color-surface-2);
-  --el-menu-bg-color: var(--color-dark-bg);
-  --el-menu-text-color: var(--color-dark-text);
-  --el-menu-active-color: var(--color-accent);
-  --el-menu-hover-bg-color: rgba(255, 255, 255, 0.05);
-  --el-menu-hover-text-color: #fff;
-  --el-tag-primary-bg-color: var(--color-primary-bg);
-  --el-tag-primary-text-color: var(--color-primary);
-  --el-tag-warning-bg-color: var(--color-accent-bg);
-  --el-tag-warning-text-color: var(--color-accent-dark);
+  --el-color-primary:var(--color-primary);
+  --el-color-primary-dark-2:var(--color-primary-dark);
+  --el-color-primary-light-3:var(--color-primary-light);
+  --el-color-primary-light-5:#f5b090; --el-color-primary-light-7:#fad0c0; --el-color-primary-light-8:#fce4d8; --el-color-primary-light-9:#fdf0e8;
+  --el-color-success:var(--color-success); --el-color-warning:var(--color-warning); --el-color-danger:var(--color-danger); --el-color-info:var(--color-info);
+  --el-border-radius-base:var(--radius-sm);
+  --el-font-size-base:var(--font-size-base); --el-font-family:var(--font-family);
+  --el-bg-color:var(--color-bg); --el-bg-color-overlay:var(--color-surface);
+  --el-text-color-primary:var(--color-text); --el-text-color-regular:var(--color-text-2); --el-text-color-secondary:var(--color-text-muted); --el-text-color-placeholder:var(--color-text-dim);
+  --el-border-color:var(--color-border); --el-border-color-light:var(--color-border-light);
+  --el-fill-color:var(--color-bg); --el-fill-color-light:var(--color-bg-warm); --el-fill-color-lighter:var(--color-surface-alt);
 }
 
-/* ── Base Reset ── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: var(--font-family);
-  font-size: var(--font-size-base);
-  line-height: 1.6;
-  color: var(--color-text);
-  background: var(--color-bg);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ── Typography Helpers ── */
-h1, h2, h3 {
-  text-wrap: balance;
-}
-
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-thumb { background: var(--color-text-dim); border-radius: 3px; }
-::-webkit-scrollbar-track { background: transparent; }
-
-/* ── Reduced Motion ── */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;font-family:var(--font-family);font-size:var(--font-size-base);line-height:1.7;color:var(--color-text);background:var(--color-bg);-webkit-font-smoothing:antialiased}
+h1,h2,h3{text-wrap:balance;font-weight:600}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:var(--color-text-dim);border-radius:3px}
+::-webkit-scrollbar-track{background:transparent}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}

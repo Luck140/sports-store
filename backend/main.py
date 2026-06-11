@@ -2,12 +2,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
+import models
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Sports Store", version="1.0.0")
 
-# CORS ¿çÓòÅäÖÃ
+# CORS ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -16,13 +17,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-from routers import customers, products, cart, orders, admin, payments
+from routers import customers, products, cart, orders, admin, payments, reviews, banners, notifications
 app.include_router(customers.router)
 app.include_router(products.router)
 app.include_router(cart.router)
 app.include_router(orders.router)
 app.include_router(admin.router)
 app.include_router(payments.router)
+app.include_router(reviews.router)
+app.include_router(banners.router)
+app.include_router(notifications.router)
 
 
 @app.get("/")

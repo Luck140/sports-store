@@ -1,6 +1,6 @@
 <template>
   <div class="form-page">
-    <h2>顾客注册</h2>
+    <h2>注册账号</h2>
     <el-form :model="form" :rules="rules" ref="formRef" label-width="100px" @keyup.enter="register">
       <el-form-item label="用户名" prop="username">
         <el-input v-model="form.username" placeholder="请设置登录用户名" />

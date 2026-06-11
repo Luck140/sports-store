@@ -1,13 +1,13 @@
 <template>
   <div class="form-page">
-    <h2>顾客登录</h2>
+    <h2>欢迎登录</h2>
     <el-form :model="form" :rules="rules" ref="formRef" label-width="80px" @keyup.enter="login">
       <el-form-item label="用户名" prop="username"><el-input v-model="form.username" placeholder="请输入用户名" /></el-form-item>
       <el-form-item label="密码" prop="password"><el-input v-model="form.password" type="password" placeholder="请输入密码" show-password /></el-form-item>
       <el-form-item>
         <el-button type="primary" @click="login" :loading="loading">登录</el-button>
         <router-link to="/register"><el-button :disabled="loading">去注册</el-button></router-link>
-        <router-link to="/forgot-password"><el-button type="text" :disabled="loading">忘记密码</el-button></router-link>
+        <router-link to="/forgot-password"><el-button link :disabled="loading">忘记密码</el-button></router-link>
       </el-form-item>
     </el-form>
     <p v-if="msg" :class="['form-msg', msgType]">{{ msg }}</p>
