@@ -1,131 +1,309 @@
-日志 Day5：2026年6月11日
-
-今日工作概述
-
-  今天的开发工作从上午持续到深夜，主要任务是对前端界面进行全面性的功能增强和设计调整。上午先对现有界面进行了系统性的诊断评估，发现界面在配色、响应式布局、表单验证和交互反馈等多个方面都存在需要改进的地方。随后引入了 Impeccable 设计辅助工具对项目进行自动化扫描，结合人工评审制定了一份包含五个维度的改进计划。五个维度分别是建立设计系统文档、建立 CSS 变量体系替换硬编码颜色、修复响应式布局、增强表单验证和交互反馈、代码清理和无障碍优化。在实施过程中，配色方案经历了多次调整，从最初保留蓝色系到尝试松绿色系，再到炭灰色系，最终确定为橘色活力系。除了设计层面的改进之外，还根据需求新增了大量业务功能，涉及首页商品展示、商品分类筛选与排序、购物车数量修改与金额计算、多地址管理、订单状态追踪、商品评价、收藏功能、退款审核流程、仪表盘图表、批量操作、操作日志等十二个类别的功能。
-
-一、版本迭代过程
-
-  今天的设计改进经历了多次版本迭代，每次迭代都在解决前一个版本的问题。
-
-  1. 版本一：直接修改首页
-
-  在没有建立设计规范的情况下直接让 AI 修改首页代码。AI 生成了一个使用深色背景搭配橙红色系风格的版本，但实际效果比较杂乱，各种装饰形状和动画堆砌在一起，页面显得没有章法。经过反思，认识到问题的根源在于没有先确定设计方向就直接修改代码。于是完全放弃这个版本，将代码恢复到最初的状态。
-
-  2. 版本二：使用 Impeccable 五步流程
-
-  恢复代码之后，按照审计报告制定的五个维度逐步推进改进。第一步建立设计文档，第二步建立 CSS 变量体系，第三步修复响应式布局，第四步添加表单验证和加载状态，第五步清理代码和添加无障碍支持。在这个版本中，最初保留了 Element Plus 的默认蓝色系配色，因为蓝色是大多数企业管理系统的通用选择。但用户反馈蓝色系太大众化，缺乏辨识度，希望换成更有特色的配色方案。
-
-  3. 版本三：松绿色系尝试
-
-  放弃蓝色系之后，选择了深松绿搭配琥珀金作为新的配色方案。松绿色的灵感来自森林和自然界的意象，试图在企业管理系统中形成独特的品牌记忆点。琥珀金用于价格显示和菜单选中态，传递价值感。暖白色背景取代冷灰色调。这个版本的代码改动非常大，涉及设计文档更新、CSS 变量全面替换、所有 Vue 组件的颜色值更新。但用户反馈松绿色显得老气，像传统企业的配色，不适合体育用品这个行业。
-
-  4. 版本四：炭灰色系尝试
-
-  放弃松绿色之后，转向了暖炭色搭配陶土橘的配色方向。设计思路上试图走现代编辑风格，大量留白、减少卡片感、用呼吸感和层次感来替代传统的卡片堆砌。炭灰色侧边栏搭配陶土橘色按钮和强调元素。但用户反馈整体配色特别丑，不要用这种深色系像灰色一样的颜色，并要求侧边栏使用橘色。
-
-  5. 版本五：橘色活力系
-
-  最终确定的配色方案以橘色为主色调。侧边栏采用橘色背景搭配白色文字和图标，主按钮和强调元素统一使用橘色，页面背景使用浅灰色。所有 Element Plus 组件的主题色都通过 CSS 变量映射到橘色，整个界面的色彩体系保持了一致性。这次终于没有再收到配色的负面反馈。
-
-二、设计系统建设
-
-  在没有设计规范的情况下直接修改代码容易出现风格不统一的问题。建立了两个核心文档来规范整个设计体系。
-
-  1. PRODUCT.md
-
-  记录了产品层面的战略信息。用户群体定位为体育用品批发行业的管理人员和工作人员。品牌个性定义为专业、可靠、高效。设计原则方面明确了拒绝花哨电商风格、保持界面干净整齐、用细节体现品质等方向。
-
-  2. DESIGN.md
-
-  记录了视觉层面的具体规范。每次配色方案调整都需要同步更新这个文档。文档包含六个标准章节：概述、色彩、字体、层级与阴影、组件规范、使用规范。其中色彩章节记录了每种颜色的色值、用途和使用场景。组件规范涵盖了按钮、卡片、输入框、侧边栏导航等常用组件的样式定义。
-
-  3. CSS Token 系统
-
-  在 base.css 中定义了一套完整的 CSS 变量体系，涵盖品牌色、中性色、文字色、暗角色、反馈色、阴影、字体大小、间距和圆角等维度。Element Plus 的组件主题变量与项目变量进行了映射，实现了按钮、标签、表格、弹窗、菜单等所有组件的一键适配。后续如果要更换配色，只需要修改 base.css 中的变量值即可，不需要到每个页面文件中去查找和替换颜色。
-
-三、新增功能详细说明
-
-  今天的改进不仅限于设计层面，还新增了大量业务功能，主要分为以下十二个类别。
-
-  1. 首页相关功能
-
-  首页不再是空白的欢迎页，而是展示热销商品列表。通过调用后端热销商品接口，按销量排序获取商品数据并展示在首页。新增了轮播横幅功能，后台可配置横幅的内容和跳转链接。新增了商品分类入口，五大品类各有图标和描述文字，用户点击可直接跳转到对应分类的商品列表。
-
-  2. 商品浏览功能
-
-  商品列表页新增了分类筛选功能，支持按球类、服装、器材、鞋类、配件五个类别筛选商品。新增了排序功能，支持按价格从低到高、从高到低、按销量排序。新增了价格区间筛选，用户可以输入最低价和最高价来过滤商品。搜索功能进行了增强，支持搜索商品名称和描述中的关键词，搜索框有防抖处理避免频繁请求。商品列表实现了分页，每页显示十二个商品。商品卡片新增了品类标签、销售数量、库存状态的颜色区分显示。库存充足时显示绿色文字，库存紧张时显示橙色警告，缺货时显示红色文字并且购买按钮自动禁用。未登录用户可以自由浏览商品列表和商品详情，只有点击加入购物车或购买时才提示需要登录。
-
-  3. 购物车功能
-
-  购物车页面进行了重大改进。商品列表不再只显示商品编号，而是完整展示商品名称、单价、购买数量和该商品的小计金额。数量可以通过加减按钮或直接输入数字来修改，修改后小计金额和总金额实时更新。购物车底部显示商品总件数和商品总金额。删除按钮增加了二次确认弹窗，防止误操作。商品列表区与结算信息区做了明确的分隔，结算区包含收货地址选择、运费计算和发票信息三个部分。
-
-  4. 地址管理功能
-
-  新增了多地址管理功能。用户可以在个人中心新增、编辑、删除收货地址。每个地址包含收件人姓名、联系电话、详细地址、地址标签和是否设为默认地址。地址标签支持预设选项如家、公司、仓库、学校，也支持用户自定义输入。在购物车结算时，用户可以从已保存的地址中快速选择，选择后自动填充收件人信息和联系电话。地址编辑和删除操作有确认弹窗。
-
-  5. 下单流程功能
-
-  下单时自动计算运费。运费规则为首重一公斤内包邮，超出一公斤后每公斤加收八元。系统根据用户填写的货物总重量自动计算并展示运费金额。结算区展示完整的金额构成，包括商品金额、运费和实付金额。发票功能支持选择不开具发票、开具普通发票或增值税专用发票，选择开具发票后显示发票抬头和纳税人识别号字段。提交订单时需要验证收件人、联系电话和收货地址三个必填字段，手机号需要符合十一位数字格式。下单成功后自动跳转到订单详情页而不是订单列表页。
-
-  6. 订单管理功能
-
-  订单列表新增了搜索和筛选功能。用户可以按订单号搜索，也可以按订单状态筛选。订单列表实现了分页，每页显示十条记录。订单状态新增了已完成状态，已发货的订单用户确认收货后状态变为已完成。新增了顾客自行取消订单功能，但仅限于待确认状态的订单。已确认或已发货的订单不能由顾客取消，需要联系管理员处理。新增了催单功能，待确认或已确认的订单用户可以点击催单按钮提醒管理员尽快处理。新增了退款申请流程，已发货或已完成的订单用户可以提交退款申请，退款需要管理员审核同意后才能执行，而不是用户直接操作退款。订单详情页新增了时间轴展示，按时间顺序展示订单从创建到完成的完整流转过程。订单详情页展示完整的订单信息，包括商品明细、金额构成、收货地址、发票信息和付款记录。
-
-  7. 支付功能
-
-  支付确认弹窗中展示完整的费用明细，包括商品金额、运费和实付金额，让用户在付款前再次确认。订单详情页可以查看该订单的所有付款记录，包括支付方式、金额、状态、流水号和支付时间。
-
-  8. 评价功能
-
-  确认收货后用户可以对已购买的商品进行评价。评价内容包括一到五星评分和文字评价内容。评价记录关联到具体的订单和商品，每个订单的每个商品只能评价一次。商品详情页下方展示该商品的所有评价列表，包括评分星级、评价内容、评价人用户名和评价时间。商品详情页同时展示平均评分和评价总数。
-
-  9. 收藏功能
-
-  用户浏览商品时可以点击收藏按钮将商品加入收藏列表。在个人中心的收藏标签页中可以看到所有已收藏的商品。每个商品显示名称和价格，点击可以跳转到商品详情页。商品详情页会根据当前用户是否已收藏该商品显示不同的按钮状态。收藏列表为空时显示友好的引导提示和去逛逛按钮。
-
-  10. 用户账户功能
-
-  新增了修改密码功能。用户需要输入原密码、新密码和确认新密码三个字段，系统验证原密码正确且两次新密码一致后才能修改。新增了头像上传功能，用户可以选择本地图片文件，转换为 Base64 格式后存储。个人中心页面采用了标签式布局，基本信息、修改密码、收货地址和我的收藏四个区域通过顶部标签切换显示，同时在侧边栏的个人中心菜单下也可以通过子菜单直接跳转到对应的标签。
-
-  11. 管理后台功能
-
-  仪表盘新增了待办提醒功能，当有待确认订单、库存预警商品或待审核退款时，在仪表盘顶部醒目显示提醒信息，每条提醒可点击直接跳转到对应处理页面。新增了销售数据展示，包括最近三十天的销售额统计和热销商品排行榜。订单管理页面新增了批量确认和批量发货功能，管理员可以勾选多个订单后一键批量操作。新增了订单搜索功能，支持按订单号或顾客姓名搜索。新增了顾客详情弹窗，点击订单中的顾客名可以查看该顾客的基本信息、历史订单数量和消费总额。新增了退款审核功能，管理员可以同意或拒绝顾客的退款申请。进货管理页面新增了库存预警商品列表，管理员可以查看所有库存不足的商品，并支持一键生成进货单。新增了操作日志记录，管理员的关键操作如确认订单、发货、取消订单、进货入库、退款审核等都会记录到日志表中，包括操作人、操作时间、操作类型和关联数据。
-
-  12. 数据完整性功能
-
-  下单时订单明细表会保存商品名称快照。即使后续商品名称被修改或商品被下架，历史订单中仍能看到下单时的商品名称。操作日志表记录了所有管理员的关键操作，包括订单确认、发货、取消、进货入库、退款审核等。站内通知表用于记录发送给用户的订单状态变更通知。
-
-四、侧边栏改造
-
-  侧边栏进行了多次设计调整。最初使用深蓝色背景，后来改为松绿色，再改为炭灰色，最终确定为橘色。侧边栏顶部展示系统名称 SportsStore，下方展示用户头像、用户名和角色信息。菜单项使用 Element Plus 的 el-menu 组件。个人中心菜单改为了嵌套子菜单模式，点击后展开显示基本信息、修改密码、收货地址和我的收藏四个子项，用户可以直接从侧边栏跳转到个人中心的任意功能区域。购物车菜单项会实时显示购物车中的商品数量角标。
-
-五、响应式布局修复
-
-  登录页面和注册页面的表单宽度从固定像素值改为了百分比宽度配合最大宽度的方式，在不同屏幕尺寸下都能正常显示。首页的功能卡片从固定宽度改为了使用 CSS 的 clamp 函数实现自适应，卡片容器添加了 flex-wrap 属性。商品列表的栅格系统添加了响应式断点，手机上每行一列，平板上每行两列，桌面上每行四列。侧边栏在平板尺寸下宽度缩小，在手机尺寸下改为横向布局。
-
-六、表单验证与交互反馈增强
-
-  登录页面添加了用户名和密码的必填验证。注册页面添加了密码长度校验、手机号格式校验和邮箱格式校验。购物车结算区验证收件人、联系电话和收货地址三个字段。修改密码时验证原密码、新密码和确认新密码三个字段。七个页面的异步操作都添加了加载状态指示和按钮禁用防止重复提交。搜索功能添加了三百毫秒的防抖处理。
-
-七、数据库变更
-
-  新增了六张数据表。地址表用于存储用户的多个收货地址。评价表用于存储用户对商品的评分和评价内容。收藏表用于记录用户收藏的商品。横幅表用于存储首页轮播图的内容配置。通知表用于记录发送给用户的站内通知。操作日志表用于记录管理员的操作审计记录。已有的商品表新增了分类字段和销售数量字段。已有的客户表新增了头像字段。已有的订单明细表新增了商品名称快照字段。
-
-八、遇到的困难
-
-  第一个困难是配色方案的选择。今天经历了蓝色、松绿色、炭灰色和橘色四个版本的迭代，每个版本都需要修改全局的 CSS 变量体系和设计文档。配色的问题在于很难在专业感、辨识度和美观之间找到平衡点。蓝色虽然专业但太常见，松绿色虽然独特但显老气，炭灰色虽然现代但被反馈像灰色一样丑，最终橘色在活力和专业之间找到了一个妥协点。
-
-  第二个困难是 Element Plus 组件样式的深度覆盖。虽然 Element Plus 提供了 CSS 变量机制来控制主题，但并非所有组件的所有样式都能通过变量覆盖。部分组件的内部样式使用了固定色值而不是变量引用，需要查看组件源码来确认具体的选择器，然后通过更高优先级的选择器来覆盖。侧边栏菜单的样式定制尤其复杂，因为 el-menu 组件有大量的内置样式规则，需要仔细处理激活态、悬停态、子菜单展开态的样式。
-
-  第三个困难是商品列表功能的设计。商品列表需要同时支持分类筛选、排序、价格区间过滤、关键词搜索和分页，这些筛选条件之间需要正确组合。用户清空搜索框或切换筛选条件时需要重置分页到第一页。价格区间的输入框需要处理清空操作和非法输入。搜索框需要添加防抖处理避免频繁请求。
-
-  第四个困难是数据库变更的协调。新增的六张数据表需要通过代码来创建，因为修改已有的数据库结构比建新库复杂。商品的分类字段需要根据现有商品数据来填充合适的分类值。横幅表需要插入初始的示例数据。
-
-九、文件改动清单
-
-  本次提交涉及约三十个文件的改动。新增文件四个，分别是 PRODUCT.md、DESIGN.md、.impeccable 目录下的设计配置文件和 day5 日志文件。后端新增了三个路由文件，分别是评价路由、横幅路由和通知路由。后端修改了六个文件，包括数据模型、数据校验模式、主入口文件和三个已有路由文件。前端修改了约十五个文件，包括入口 HTML 文件、全局样式文件、主布局组件和所有业务页面组件。数据库新增了六张表，已有的四张表新增了字段。累计新增代码约两千行，修改代码约八百行。
-
-十、下一步计划
-
-  今天的改进覆盖了设计系统和业务功能两个大的层面，完成了从界面外观到交互逻辑的全面升级。不过前端的优化和功能的完善是一个持续的过程，今天完成的工作主要是建立基础框架和补充核心功能。后续可以根据使用反馈和实际需求来灵活安排改进方向。配色方面如果橘色系的某些细节需要调整可以在现有 CSS 变量体系下快速完成。功能方面还有一些细节可以继续完善，比如搜索建议、历史记录、数据导出等功能。具体的改进方向和优先级应该以实际使用中的反馈为导向，根据反馈的紧迫程度来灵活调整。可能从现有功能的细节优化入手，也可能继续补充新的业务功能模块，视后续的实际情况和项目要求而定。
+# 日志 Day5：2026年6月11日 — 前端全面重构与功能完善
+
+---
+
+## 今日工作概述
+
+Day4完成了设计系统和配色方案的建立，今天在此基础上对前端进行了全面重构，同时对后端进行了功能完善。前端方面，所有页面组件的代码都进行了大幅度重写，涉及12个类别共计49项改进。后端方面，新增了横幅管理、评价系统和通知推送三个模块，并对现有模块进行了功能增强。数据库从9张表扩展为15张表，新增了地址、评价、收藏、横幅、通知和操作日志表。到当天结束时，系统的功能完整度和用户体验都有了显著提升。
+
+---
+
+## 一、购物车页面重构
+
+购物车页面是此次重构的重点。原来的购物车只有简单的商品ID和数量显示，现在重构为两个清晰的区域：
+
+上半部分为商品列表，每行展示商品名称、单价、数量调节器、小计金额和删除按钮。数量修改后实时刷新小计和总金额，数量上限绑定到商品当前库存。
+
+```html
+<el-card v-if="cart.items && cart.items.length">
+  <el-table :data="cart.items">
+    <el-table-column label="商品" min-width="160">
+      <template #default="scope">{{ scope.row.product_name }}</template>
+    </el-table-column>
+    <el-table-column label="数量" width="150">
+      <template #default="scope">
+        <el-input-number v-model="scope.row.quantity" :min="1"
+          :max="scope.row.stock_quantity || 999" size="small"
+          @change="updateQty(scope.row)" controls-position="right" />
+      </template>
+    </el-table-column>
+    <el-table-column label="小计" width="110">
+      <template #default="scope">
+        <span style="color:var(--color-accent);font-weight:600">¥{{ scope.row.subtotal }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="操作" width="80">
+      <template #default="scope">
+        <el-popconfirm title="确认删除该商品？" @confirm="remove(scope.row.product_id)">
+          <template #reference><el-button type="danger" link size="small">删除</el-button></template>
+        </el-popconfirm>
+      </template>
+    </el-table-column>
+  </el-table>
+</el-card>
+```
+
+下半部分为结算信息区域，包含收货地址选择、运费计算和发票信息。运费计算使用computed属性实现实时预览：
+
+```javascript
+const shippingCost = computed(() => {
+  const w = parseFloat(info.value.total_weight) || 0
+  if (w <= 1) return 0
+  return Math.round((w - 1) * 8 * 100) / 100
+})
+const grandTotal = computed(() =>
+  Math.round((cart.value.total_price + shippingCost.value) * 100) / 100
+)
+```
+
+地址选择功能支持从已保存地址中选取，选择后自动填充收件人、电话和地址。发票支持不需要、普通发票和增值税专用发票三种选项，选择后动态显示发票抬头和税号输入框。
+
+新增了货物重量自动估算功能：
+
+```javascript
+watch(() => cart.value.item_count, (n) => {
+  if (n > 0 && !info.value.total_weight) {
+    info.value.total_weight = Math.round(n * 0.5 * 10) / 10
+  }
+})
+```
+
+> **📷 图片1：购物车页面重构后截图**
+> 说明：启动后浏览器打开购物车页面，截取完整布局，保存至日志图片/day5/购物车页面.png
+
+---
+
+## 二、侧边栏导航重构
+
+侧边栏导航重构为手风琴展开模式。原来的实现使用了Element Plus的el-sub-menu组件，存在页面刷新后菜单收起的问题。改用自定义HTML元素配合Vue Router的router-link组件，通过reactive对象控制展开状态：
+
+```html
+<template v-if="!userStore.isAdmin">
+  <router-link to="/products" class="sb-item">商品列表</router-link>
+  <router-link to="/cart" class="sb-item">购物车</router-link>
+
+  <div class="sb-group">
+    <div class="sb-item sb-parent" @click="toggleMenu('orders')"
+      :class="{ 'sb-expanded': openMenus.orders }">
+      我的订单 <span class="sb-arrow">{{ openMenus.orders ? '▾' : '▸' }}</span>
+    </div>
+    <div v-show="openMenus.orders" class="sb-sub">
+      <router-link to="/orders" class="sb-sub-item">全部订单</router-link>
+      <router-link to="/orders?status=PENDING" class="sb-sub-item">待付款</router-link>
+      <router-link to="/orders?status=SHIPPED" class="sb-sub-item">待收货</router-link>
+    </div>
+  </div>
+</template>
+```
+
+子菜单展开状态通过reactive对象管理，路由变化时自动展开对应菜单：
+
+```javascript
+const openMenus = reactive({ orders: false, profile: false })
+const toggleMenu = (key) => { openMenus[key] = !openMenus[key] }
+
+watch(route, () => {
+  if (route.path.startsWith('/orders')) openMenus.orders = true
+  if (route.path.startsWith('/profile')) openMenus.profile = true
+})
+```
+
+> **📷 图片2：侧边栏导航展开效果截图**
+> 说明：登录后截取侧边栏展开子菜单效果，保存至日志图片/day5/侧边栏导航.png
+
+---
+
+## 三、订单详情页重构
+
+订单详情页重构为四个清晰的信息区块：
+
+```html
+<!-- 区块1：订单基本信息 -->
+<el-card>
+  <el-descriptions :column="2" border>
+    <el-descriptions-item label="订单号">#{{ order.order_id }}</el-descriptions-item>
+    <el-descriptions-item label="订单状态">
+      <el-tag :type="tagType(order.status)">{{ statusMap[order.status] }}</el-tag>
+    </el-descriptions-item>
+    <el-descriptions-item label="实付金额">
+      <b style="color:var(--color-accent)">¥{{ order.total_amount }}</b>
+    </el-descriptions-item>
+    <el-descriptions-item label="收件人">{{ order.recipient_name }}</el-descriptions-item>
+  </el-descriptions>
+</el-card>
+
+<!-- 区块2：订单时间轴 -->
+<el-card>
+  <el-timeline>
+    <el-timeline-item v-for="t in timeline" :key="t.title"
+      :timestamp="formatTime(t.time)" placement="top">
+      <h4>{{ t.title }}</h4>
+      <p>{{ t.desc }}</p>
+    </el-timeline-item>
+  </el-timeline>
+</el-card>
+
+<!-- 区块3：商品明细 -->
+<el-card>
+  <el-table :data="details">
+    <el-table-column prop="product_name" label="商品名称" />
+    <el-table-column label="单价"><template #default="{row}">¥{{ row.unit_price }}</template></el-table-column>
+    <el-table-column prop="quantity" label="数量" />
+    <el-table-column label="金额"><template #default="{row}">¥{{ row.total_amount }}</template></el-table-column>
+  </el-table>
+</el-card>
+
+<!-- 区块4：付款记录 -->
+<el-card v-if="payments.length">
+  <el-table :data="payments">
+    <el-table-column prop="payment_method" label="支付方式" />
+    <el-table-column label="金额"><template #default="{row}">¥{{ row.amount }}</template></el-table-column>
+    <el-table-column prop="status" label="状态" />
+    <el-table-column prop="transaction_id" label="流水号" />
+  </el-table>
+</el-card>
+```
+
+> **📷 图片3：订单详情页四区块截图**
+> 说明：点击某个订单进入详情页，截取完整页面，保存至日志图片/day5/订单详情页.png
+
+---
+
+## 四、个人中心页面重构
+
+个人中心页面重构为四个标签页切换，数据按需加载：
+
+```javascript
+const loadProfile = async () => { ... }
+const loadAddresses = async () => { ... }
+const loadFavorites = async () => { ... }
+
+const switchTab = (newTab) => {
+  tab.value = newTab
+  if (newTab === 'addresses' && !addresses.value.length) loadAddresses()
+  if (newTab === 'favorites' && !favorites.value.length) loadFavorites()
+}
+```
+
+基本信息标签支持头像上传，转为Base64存储并限制文件大小：
+
+```javascript
+const onFileChange = (e) => {
+  const file = e.target.files[0]
+  if (!file) return
+  if (file.size > 2 * 1024 * 1024) {
+    ElMessage.warning('图片不能超过2MB')
+    return
+  }
+  const reader = new FileReader()
+  reader.onload = (ev) => { avatar.value = ev.target.result }
+  reader.readAsDataURL(file)
+}
+```
+
+> **📷 图片4：个人中心页面截图**
+> 说明：登录后进入个人中心，截取基本信息标签页，保存至日志图片/day5/个人中心页面.png
+
+---
+
+## 五、后端新增模块
+
+新增了三个后端模块：
+
+横幅模块支持首页轮播图的灵活配置：
+
+```python
+@router.get("/", response_model=list[BannerResponse])
+def get_active_banners(db: Session = Depends(get_db)):
+    return db.query(Banner).filter(Banner.is_active == 1).order_by(Banner.sort_order).all()
+```
+
+评价模块实现了商品评价功能：
+
+```python
+@router.post("/")
+def create_review(data: ReviewCreate, db: Session = Depends(get_db)):
+    if data.rating < 1 or data.rating > 5:
+        raise HTTPException(status_code=400, detail="评分范围为1-5")
+    order = db.query(Order).filter(Order.order_id == data.order_id).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="订单不存在")
+    review = Review(order_id=data.order_id, product_id=data.product_id,
+                    customer_id=data.customer_id, rating=data.rating, content=data.content)
+    db.add(review)
+    db.commit()
+    return review
+```
+
+通知模块实现了站内通知功能，在订单状态变更时自动发送通知：
+
+```python
+@router.get("/{customer_id}")
+def list_notifications(customer_id: int, page: int, page_size: int, db: Session = Depends(get_db)):
+    q = db.query(Notification).filter(Notification.customer_id == customer_id)
+    total = q.count()
+    items = q.offset((page-1)*page_size).limit(page_size).all()
+    return {"items": items, "total": total}
+```
+
+---
+
+## 六、现有模块增强
+
+顾客模块新增了地址管理和收藏管理功能：
+
+```python
+@router.get("/{customer_id}/addresses")
+def list_addresses(customer_id: int, db: Session = Depends(get_db)):
+    return db.query(Address).filter(Address.customer_id == customer_id).all()
+
+@router.post("/{customer_id}/favorites/{product_id}")
+def add_favorite(customer_id: int, product_id: int, db: Session = Depends(get_db)):
+    exist = db.query(Favorite).filter(Favorite.customer_id == customer_id,
+                                       Favorite.product_id == product_id).first()
+    if exist:
+        raise HTTPException(status_code=400, detail="已收藏过该商品")
+    db.add(Favorite(customer_id=customer_id, product_id=product_id))
+    db.commit()
+    return {"message": "收藏成功"}
+```
+
+商品模块增加了分类查询和热销商品接口，列表查询新增了分类筛选、价格区间过滤和排序功能。支付模块增加了退款申请、退款审核和拒绝退款功能。管理后台增加了销售图表、热销商品排行、顾客详情和操作日志查询接口。
+
+---
+
+## 七、遇到的问题与解决
+
+| 编号 | 问题 | 原因 | 解决方法 |
+|------|------|------|----------|
+| 1 | 侧边栏子菜单刷新后收起 | el-sub-menu组件状态不持久化 | 使用reactive+watch管理展开状态 |
+| 2 | 购物车数量修改与库存不同步 | 前端未绑定库存上限 | input-number的max属性绑定当前库存量 |
+| 3 | 个人中心Tab切换数据重复请求 | 页面加载时一次性请求所有接口 | 改为按需加载 |
+| 4 | 评价接口未验证用户身份 | 未校验评价人是否与订单关联 | 创建评价时验证订单归属 |
+
+---
+
+## 八、文件改动清单
+
+| 文件 | 操作 | 说明 |
+|------|------|------|
+| frontend/src/views/Cart.vue | 重写 | 购物车页面重构（+80行） |
+| frontend/src/views/Orders.vue | 重写 | 订单列表重构（+159行） |
+| frontend/src/views/OrderDetail.vue | 重写 | 订单详情四区块（+77行） |
+| frontend/src/views/Profile.vue | 重写 | 个人中心四标签（+142行） |
+| frontend/src/views/Products.vue | 重构 | 商品列表优化（+205行） |
+| frontend/src/App.vue | 重写 | 侧边栏手风琴导航（+117行） |
+| backend/routers/banners.py | 新增 | 横幅管理模块 |
+| backend/routers/reviews.py | 新增 | 评价管理模块 |
+| backend/routers/notifications.py | 新增 | 通知推送模块 |
+| backend/routers/customers.py | 修改 | 新增地址和收藏接口（+136行） |
+| backend/routers/payments.py | 修改 | 新增退款功能（+65行） |
+| backend/models.py | 修改 | 新增6个模型（+76行） |
+| backend/schemas.py | 修改 | 新增数据模型（+93行） |
+| database/init.sql | 修改 | 15张表完整建表脚本 |
+
+---
+
+## 九、下一步计划
+
+明天将进行系统的细节优化和Bug修复，重点改进侧边栏交互、个人中心加载体验、购物车校验逻辑和订单时间轴节点完善。
