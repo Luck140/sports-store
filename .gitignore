@@ -1,6 +1,17 @@
-venv/ 
-__pycache__/ 
-*.pyc 
-node_modules/ 
-.env 
-*.log 
+# Dependencies
+前端代码/node_modules/
+后端服务代码/venv/
+后端服务代码/__pycache__/
+后端服务代码/**/__pycache__/
+
+# Build output
+前端代码/dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+*.swo
