@@ -1,0 +1,105 @@
+/* ═══════════════════════════════════════════════
+   SportsStore - 全局样式 & 背景图系统
+   ═══════════════════════════════════════════════ */
+@import './base.css';
+
+/* ── 背景图功能层（由 JS 切换 --ss-current-bg） ── */
+.bg-layer {
+  position: relative;
+  min-height: 100%;
+  background: var(--ss-current-bg, var(--ss-bg-default)) center center / cover no-repeat fixed;
+}
+.bg-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.15);
+  z-index: 0;
+  pointer-events: none;
+}
+.bg-layer > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Element Plus Global Tweaks ── */
+.el-table {
+  border-radius: var(--ss-radius-sm);
+}
+.el-table th.el-table__cell {
+  font-weight: var(--ss-font-weight-semibold);
+  color: var(--ss-text);
+  background: var(--ss-bg-warm);
+}
+.el-card {
+  border-radius: var(--ss-radius-sm);
+  border: 1px solid var(--ss-border-light);
+  --el-card-padding: 16px 20px;
+}
+.el-tag {
+  border-radius: var(--ss-radius-sm);
+  font-weight: var(--ss-font-weight-medium);
+}
+.el-dialog {
+  border-radius: var(--ss-radius-sm);
+}
+.el-dialog__header {
+  font-weight: var(--ss-font-weight-semibold);
+}
+.el-button {
+  border-radius: var(--ss-radius-sm);
+  font-weight: var(--ss-font-weight-medium);
+}
+
+/* ── Utility Classes ── */
+.text-muted { color: var(--ss-text-muted); }
+.text-accent { color: var(--ss-accent); }
+.text-primary { color: var(--ss-primary); }
+.text-success { color: var(--ss-success); }
+.text-warning { color: var(--ss-warning); }
+.text-danger { color: var(--ss-danger); }
+.text-xs { font-size: var(--ss-text-xs); }
+.text-sm { font-size: var(--ss-text-sm); }
+.text-base { font-size: var(--ss-text-base); }
+.text-lg { font-size: var(--ss-text-lg); }
+.text-xl { font-size: var(--ss-text-xl); }
+.text-2xl { font-size: var(--ss-text-2xl); }
+.font-medium { font-weight: var(--ss-font-weight-medium); }
+.font-semibold { font-weight: var(--ss-font-weight-semibold); }
+.font-bold { font-weight: var(--ss-font-weight-bold); }
+.mt-2 { margin-top: var(--ss-space-2); }
+.mt-3 { margin-top: var(--ss-space-3); }
+.mt-4 { margin-top: var(--ss-space-4); }
+.mt-6 { margin-top: var(--ss-space-6); }
+.mb-2 { margin-bottom: var(--ss-space-2); }
+.mb-3 { margin-bottom: var(--ss-space-3); }
+.mb-4 { margin-bottom: var(--ss-space-4); }
+.mb-6 { margin-bottom: var(--ss-space-6); }
+.p-4 { padding: var(--ss-space-4); }
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--ss-font-family);
+  font-size: var(--ss-text-base);
+  line-height: var(--ss-line-height-base);
+  color: var(--ss-text);
+  background: var(--ss-bg);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { text-wrap: balance; font-weight: var(--ss-font-weight-semibold); }
+ul, ol { list-style: none; padding: 0; margin: 0; }
+a { color: var(--ss-primary); text-decoration: none; }
+a:hover { color: var(--ss-primary-dark); }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: var(--ss-text-dim); border-radius: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
